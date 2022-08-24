@@ -1,15 +1,33 @@
-import { commands, ExtensionContext } from 'vscode';
+import { window, commands, ExtensionContext } from 'vscode';
 import { installHelper } from './installHelper';
 import { initHelper } from './initHelper';
+import { multiStepInput } from './multiStepInput';
 
 export function activate(context: ExtensionContext) {
 	
-	let disposable = commands.registerCommand('sfmc-devtools-vscode.mcdev', () => {
+
+	context.subscriptions.push(commands.registerCommand('sfmc-devtools-vscode.mcdev', async () => {
+		const options: { [key: string]: (context: ExtensionContext) => Promise<void> } = {
+			multiStepInput,
+		};
+		const quickPick = window.createQuickPick();
+		quickPick.items = Object.keys(options).map(label => ({ label }));
+		quickPick.onDidChangeSelection(selection => {
+			if (selection[0]) {
+				options[selection[0].label](context)
+					.catch(console.error);
+			}
+		});
+		quickPick.onDidHide(() => quickPick.dispose());
+		quickPick.show();
+	}));
+}
+/*	let disposable = commands.registerCommand('sfmc-devtools-vscode.mcdev', () => {
 		installHelper(context);
 	});
 
 	context.subscriptions.push(disposable);
-}
+*/
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
