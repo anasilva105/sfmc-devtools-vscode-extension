@@ -1,14 +1,14 @@
 import { window, commands, ExtensionContext } from 'vscode';
 import { installHelper } from './installHelper';
 import { initDevTools } from './initDevTools';
-//import { operationalCommands } from './operationalCommands';
+import { operationalCommands } from './operationalCommands';
 
 export function activate(context: ExtensionContext) {
 	
 
 	context.subscriptions.push(commands.registerCommand('sfmc-devtools-vscode.mcdev', async () => {
 		const options: { [key: string]: (context: ExtensionContext) => Promise<void> } = {
-			initDevTools//, operationalCommands,
+			initDevTools, operationalCommands
 		};
 		const quickPick = window.createQuickPick();
 		quickPick.items = Object.keys(options).map(label => ({ label }));
