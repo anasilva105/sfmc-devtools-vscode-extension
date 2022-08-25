@@ -1,5 +1,5 @@
 import { window, commands, ExtensionContext } from 'vscode';
-import { installHelper } from './installHelper';
+// import { installHelper } from './installHelper';
 import { initDevTools } from './initDevTools';
 import { operationalCommands } from './operationalCommands';
 
