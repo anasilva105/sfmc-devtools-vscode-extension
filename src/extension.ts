@@ -1,14 +1,14 @@
 import { window, commands, ExtensionContext } from 'vscode';
 import { installHelper } from './installHelper';
-import { initHelper } from './initHelper';
-import { multiStepInput } from './multiStepInput';
+import { initDevTools } from './initDevTools';
+//import { operationalCommands } from './operationalCommands';
 
 export function activate(context: ExtensionContext) {
 	
 
 	context.subscriptions.push(commands.registerCommand('sfmc-devtools-vscode.mcdev', async () => {
 		const options: { [key: string]: (context: ExtensionContext) => Promise<void> } = {
-			multiStepInput,
+			initDevTools//, operationalCommands,
 		};
 		const quickPick = window.createQuickPick();
 		quickPick.items = Object.keys(options).map(label => ({ label }));

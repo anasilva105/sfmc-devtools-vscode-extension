@@ -10,7 +10,7 @@ import { QuickPickItem, window, Disposable, QuickInputButton, QuickInput, Extens
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function multiStepInput(context: ExtensionContext) {
+export async function initDevTools(context: ExtensionContext) {
 
 
 
