@@ -18,7 +18,7 @@ export function activate(context: ExtensionContext) {
 					.catch(console.error);
 			}
 		});
-		quickPick.onDidHide(() => quickPick.dispose());
+	    quickPick.onDidHide(() => quickPick.dispose());
 		quickPick.show();
 	}));
 }

@@ -6,7 +6,8 @@
 import { ExtensionContext, window} from 'vscode';
 import { MultiStepInput } from './quickPickHelper';
 import { execInTerminal } from './utils';
-
+const git = require('simple-git')();
+const commandExists = require('command-exists');
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
  * 
@@ -22,17 +23,16 @@ export async function initDevTools(context: ExtensionContext) {
 		clientId: string;
 		clientSecret: string;
 		authUrl: string;
+		gitRemoteUrl: string;
 		accountId: string;
 		credentialName: string;
-
-
 		title: string;
 		step: number;
 		totalSteps: number;
 
 	}
 
-	async function collectInputs() {
+async function collectInputs() {
 			const state = {} as Partial<State>;
 			await MultiStepInput.run(input => inputGitUsername(input, state));
 			return state as State;
@@ -40,18 +40,27 @@ export async function initDevTools(context: ExtensionContext) {
 	
 
 
-	const title = 'Init DevTools';
+const title = 'Init DevTools';
 
+
+async function requirements(){
+	if (!commandExists.sync('git')) {
+		window.showInformationMessage('Git installation not found.');
+		window.showInformationMessage('Please follow our tutorial on installing Git: https://github.com/Accenture/sfmc-devtools#212-install-the-git-command-line');
+	}else{
+		await collectInputs();
+	}
+}
 
 	async function inputGitUsername(input: MultiStepInput, state: Partial<State>) {
 		state.gitUsername = await input.showInputBox({
 			ignoreFocusOut: true,
 			title,
 			step: 1,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.gitUsername || '',
-			prompt: 'how you would like the credential to be named (own choice)',
-			validate: validateNameIsUnique,
+			prompt: 'Enter Git Username',
+			validate: validateUsename,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputGitEmail(input, state);
@@ -61,12 +70,13 @@ export async function initDevTools(context: ExtensionContext) {
 			ignoreFocusOut: true,
 			title,
 			step: 2,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.gitEmail || '',
-			prompt: 'how you would like the credential to be named (own choice)',
-			validate: validateNameIsUnique,
+			prompt: 'Enter Git Email',
+			validate: validateEmail,
 			shouldResume: shouldResume
 		});
+		
 		return (input: MultiStepInput) => inputCredentialName(input, state);
 	}
 
@@ -76,10 +86,10 @@ export async function initDevTools(context: ExtensionContext) {
 			ignoreFocusOut: true,
 			title,
 			step: 3,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.credentialName || '',
 			prompt: 'how you would like the credential to be named (own choice)',
-			validate: validateNameIsUnique,
+			validate: validateInput,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputClientId(input, state);
@@ -90,10 +100,10 @@ export async function initDevTools(context: ExtensionContext) {
 			ignoreFocusOut: true,
 			title,
 			step: 4,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.clientId || '',
 			prompt: 'Enter client id of installed package',
-			validate: validateNameIsUnique,
+			validate: validateInput,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputClientSecret(input, state);
@@ -104,10 +114,10 @@ export async function initDevTools(context: ExtensionContext) {
 			ignoreFocusOut: true,
 			title,
 			step: 5,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.clientSecret || '',
 			prompt: 'Choose a unique name for the Application Service',
-			validate: validateNameIsUnique,
+			validate: validateInput,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputAuthUrl(input, state);
@@ -118,10 +128,10 @@ export async function initDevTools(context: ExtensionContext) {
 			ignoreFocusOut: true,
 			title,
 			step: 6,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.authUrl || '',
 			prompt: 'Enter tenant specific auth url of installed package',
-			validate: validateNameIsUnique,
+			validate: validateInput,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputAccountId(input, state);
@@ -132,39 +142,50 @@ export async function initDevTools(context: ExtensionContext) {
 			ignoreFocusOut: true,
 			title,
 			step: 7,
-			totalSteps: 7,
+			totalSteps: 8,
 			value: state.accountId || '',
 			prompt: 'Enter MID of the Parent Business Unit',
-			validate: validateNameIsUnique,
+			validate: validateMID,
+			shouldResume: shouldResume
+		});
+		return (input: MultiStepInput) => inputGitRemoteUrl(input, state);
+	}
+
+	async function inputGitRemoteUrl(input: MultiStepInput, state: Partial<State>) {
+		state.gitRemoteUrl = await input.showInputBox({
+			ignoreFocusOut: true,
+			title,
+			step: 8,
+			totalSteps: 8,
+			value: state.gitRemoteUrl || '',
+			prompt: 'Enter URL of Git remote server',
+			validate: validateMID,
 			shouldResume: shouldResume
 		});
 		validateInfo(state);
+		return true;
 	}
 
-
 	async function validateInfo(data: any){
-		if (data.accountId  && data.credentialName && data.clientId && data.clientSecret && data.authUrl ){
+		if (data.accountId  && data.credentialName && data.clientId && data.clientSecret && data.authUrl && data.gitUsername && data.gitEmail && data.gitRemoteUrl){
 		return runInitDevtools(data);	
 		}else{
 		window.showInformationMessage(`at least one field was empty, please try again`);
 		return collectInputs();
 		}
 	}
+
 	async function runInitDevtools(data: any): Promise<boolean>{
 		data.clientId="zd7gf1xrn2rvhzvvjnig1rzg";
 		data.clientSecret="qWzsVZRNKXpceoH62rdof7W2";
 		data.authUrl="https://mct0l7nxfq2r988t1kxfy8sc47mq.auth.marketingcloudapis.com/";
 		data.accountId="7281698";
 		data.credentialName="new_test";
-		//https://github.com/tulionatale
+		data.gitRemoteUrl='x';
 	
-		const longexec="mcdev init --y.credentialName "+"'"+data.credentialName+"'"+" --y.client_id " +"'"+data.clientId+"'"+" --y.client_secret "+"'"+data.clientSecret+"'"+" --y.auth_url "+"'"+data.authUrl+"'"+" --y.account_id "+data.accountId;
-		//const longexec2="mcdev init --y.credentialName "+'"'+data.credentialName+'"'+" --y.client_id " +'"'+data.clientId+'"'+" --y.client_secret "+'"'+data.clientSecret+'"'+" --y.auth_url "+'"'+data.authUrl+'"'+" --y.account_id "+data.accountId;
-
+		const longexec="mcdev init --y.credentialName "+"'"+data.credentialName+"'"+" --y.client_id " +"'"+data.clientId+"'"+" --y.client_secret "+"'"+data.clientSecret+"'"+" --y.auth_url "+"'"+data.authUrl+"'"+" --y.gitRemoteUrl "+"'"+data.gitRemoteUrl+"'"+" --y.account_id "+data.accountId;
 		console.log(longexec);
 		let result: any = await execInTerminal(longexec);
-		console.log('run');
-		console.log(result);
 		return result;
 	}
 
@@ -176,14 +197,37 @@ export async function initDevTools(context: ExtensionContext) {
 		});
 	}
 
-	async function validateNameIsUnique(name: string) {
-		// ...validate...
+	async function validateEmail (value: string) {
 		await new Promise(resolve => setTimeout(resolve, 1000));
-		return name === 'vscode' ? 'Name not unique' : undefined;
+		value = value.trim();
+		const regex =/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return (!value || !regex.test(String(value).toLowerCase())) ? 'Please enter valid email' : undefined ;
+	}
+	async function validateUsename (value: string) {
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		value = value.trim();
+		return (!value ||
+			value.trim().length < 4 ||
+			value.includes('"') ||
+			value.includes("'")
+		) ? 'Please enter valid username' : undefined;
+	}
+	
+	async function validateMID (value: string) {
+	await new Promise(resolve => setTimeout(resolve, 1000));
+	const num = Number(value.trim());	
+	return (!num || Number.isInteger(num)) ? 'Please enter valid MID Number': undefined ;
 	}
 
+	async function validateInput (value: string) {
+	await new Promise(resolve => setTimeout(resolve, 1000));
+	value = value.trim();
+	return (!value) ? 'Please enter the indicated information': undefined ;
+	}
 
-	const state = await collectInputs();
-	window.showInformationMessage(`Creating Application Service '${state.credentialName}'`);
+	
+	requirements();
+	//const state = await collectInputs();
+	//window.showInformationMessage(`Creating Application Service '${state.credentialName}'`);
 }
 
