@@ -1,5 +1,4 @@
 import { hasPrerequisitesHandler, hasDevtoolsInstalled, runInstallDevtools } from './prerequisites';
-//import { initHelper } from './initHelper';
 import { window, ViewColumn, Uri, ExtensionContext, ProgressLocation } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';

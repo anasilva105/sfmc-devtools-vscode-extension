@@ -1,7 +1,6 @@
 import { ExtensionContext} from 'vscode';
 import { MultiStepInput } from './quickPickHelper';
 import { window} from 'vscode';
-import { execInTerminal } from './utils';
 const commandExists = require('command-exists');
 const git = require('simple-git')();
 
@@ -130,7 +129,7 @@ export async function initDevTools(context: ExtensionContext) {
 		//const longexec2="mcdev init --y.credentialName "+'"'+data.credentialName+'"'+" --y.client_id " +'"'+data.clientId+'"'+" --y.client_secret "+'"'+data.clientSecret+'"'+" --y.auth_url "+'"'+data.authUrl+'"'+" --y.account_id "+data.accountId;
 
 		console.log(longexec);
-		let result: any = await execInTerminal(longexec);
+		let result: any = await window.createTerminal(longexec);
 		console.log('run');
 		console.log(result);
 		return result;

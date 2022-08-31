@@ -34,7 +34,7 @@ interface InputBoxParameters {
 	totalSteps: number;
 	value: string;
 	prompt: string;
-	validate: (value: string) => Promise<string | undefined>;
+	validate: (value: string ) => Promise<string | undefined>;
 	buttons?: QuickInputButton[];
 	shouldResume: () => Thenable<boolean>;
 }
