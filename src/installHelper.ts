@@ -4,6 +4,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 export async function installHelper(context: ExtensionContext){
+
+    
     // if user doesn't have prequisites installed
     const hasPrerequisites = await hasPrerequisitesHandler(null);
     if(!hasPrerequisites){

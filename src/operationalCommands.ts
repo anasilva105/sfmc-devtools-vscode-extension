@@ -1,6 +1,6 @@
-import { ExtensionContext, QuickPickItem } from "vscode";
+import { ExtensionContext, QuickPickItem, window } from "vscode";
 import { MultiStepInput } from "./quickPickHelper";
-import { window } from "vscode";
+
 
 export async function operationalCommands(context: ExtensionContext) {
   interface State {
@@ -15,6 +15,8 @@ export async function operationalCommands(context: ExtensionContext) {
     step: number;
     totalSteps: number;
   }
+
+  const title = "Operational Commands DevTools";
   const terminal = window.createTerminal(`Test`);
 
   //collects the inputs and calls the first window
@@ -26,13 +28,14 @@ export async function operationalCommands(context: ExtensionContext) {
   }
 
   var result: any;
-  const title = "Operational Commands DevTools";
+
+ 
 
   async function pickOperationalCommand(
     input: MultiStepInput,
     state: Partial<State>
   ) {
-    const options: QuickPickItem[] = [
+   const options :QuickPickItem[] = [
       "retrieve",
       "deploy",
       "badKeys",
@@ -56,7 +59,9 @@ export async function operationalCommands(context: ExtensionContext) {
           : undefined,
       shouldResume: shouldResume,
     });
-    return (input: MultiStepInput) => inputCredentialName(input, state);
+
+	return (input: MultiStepInput) => inputCredentialName(input, state);	
+	
   }
 
   async function inputCredentialName(
@@ -79,14 +84,13 @@ export async function operationalCommands(context: ExtensionContext) {
         console.log(command);
         terminal.show(true);
         terminal.sendText(command);
-        return result;
+        return result ;
         break;
       default:
         return (input: MultiStepInput) => inputBU(input, state);
         break;
     }
   }
-
   async function inputBU(input: MultiStepInput, state: Partial<State>) {
     state.businessUnit = await input.showInputBox({
       ignoreFocusOut: true,
@@ -98,14 +102,14 @@ export async function operationalCommands(context: ExtensionContext) {
       validate: validateInput,
       shouldResume: shouldResume,
     });
-    if (
-      state.operattionalCommand.label === "retrieve" &&
-      state.businessUnit === "*"
-    ) {
+
+
+	
+    if (state.businessUnit === "*" ) {
       const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit}`;
       return terminal.sendText(command.trim());
     }
-	console.log(state.businessUnit);
+
     switch (state.operattionalCommand.label) {
       case "badKeys":
       case "deploy":
@@ -226,6 +230,7 @@ export async function operationalCommands(context: ExtensionContext) {
   async function validateInput(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     value = value.trim();
+	console.log(value);
     return !value ? "Please enter the indicated information" : undefined;
   }
 

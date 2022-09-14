@@ -1,6 +1,5 @@
-import { ExtensionContext} from 'vscode';
+import { ExtensionContext, window} from 'vscode';
 import { MultiStepInput } from './quickPickHelper';
-import { window} from 'vscode';
 const commandExists = require('command-exists');
 const git = require('simple-git')();
 

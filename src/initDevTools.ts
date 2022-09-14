@@ -203,9 +203,12 @@ export async function initDevTools(context: ExtensionContext) {
     data.credentialName = "new_test";
     data.gitRemoteUrl = "x";
 
-    const longexec = `mcdev init --y.credentialName "${data.credentialName}" --y.client_id "${data.clientId}" --y.client_secret "${data.clientSecret}" --y.auth_url "${data.authUrl}" --y.gitRemoteUrl "${data.gitRemoteUrl}" --y.account_id ${data.accountId}`;
-    console.log(longexec);
-    terminal.sendText(longexec);
+    terminal.sendText(`git config --local user.name ${data.gitUsername}`);
+    terminal.sendText(`git config --local user.email ${data.gitEmail}`);
+    //Util.execSync('git', ['config', '--local', 'user.name', name]);
+    //const longexec = `mcdev init --y.credentialName "${data.credentialName}" --y.client_id "${data.clientId}" --y.client_secret "${data.clientSecret}" --y.auth_url "${data.authUrl}" --y.gitRemoteUrl "${data.gitRemoteUrl}" --y.account_id ${data.accountId}`;
+    //console.log(longexec);
+    //terminal.sendText(longexec);
     return;
   }
 

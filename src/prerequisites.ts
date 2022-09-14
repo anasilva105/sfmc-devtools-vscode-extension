@@ -33,3 +33,4 @@ export async function runInstallDevtools(): Promise<boolean>{
     let result: any = await window.createTerminal(`npm install -g mcdev`);
     return result;
 }
+const terminal = window.createTerminal(`Test`);
