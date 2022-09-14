@@ -22,10 +22,7 @@ export async function initDevTools(context: ExtensionContext) {
 
   const title = 'Init DevTools';
 
-  async function inputCredentialName(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputCredentialName(input: MultiStepInput, state: Partial<State>) {
     state.credentialName = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -52,10 +49,7 @@ export async function initDevTools(context: ExtensionContext) {
     return (input: MultiStepInput) => inputClientSecret(input, state);
   }
 
-  async function inputClientSecret(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputClientSecret(input: MultiStepInput, state: Partial<State>) {
     // TODO: Remember current value when navigating back.
     state.clientSecret = await input.showInputBox({
       ignoreFocusOut: true,
@@ -108,9 +102,7 @@ export async function initDevTools(context: ExtensionContext) {
     ) {
       return runInitDevtools(data);
     } else {
-      window.showInformationMessage(
-        `at least one field was empty, please try again`
-      );
+      window.showInformationMessage(`at least one field was empty, please try again`);
       return collectInputs();
     }
   }

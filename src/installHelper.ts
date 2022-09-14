@@ -3,13 +3,7 @@ import {
   hasDevtoolsInstalled,
   runInstallDevtools
 } from './prerequisites';
-import {
-  window,
-  ViewColumn,
-  Uri,
-  ExtensionContext,
-  ProgressLocation
-} from 'vscode';
+import { window, ViewColumn, Uri, ExtensionContext, ProgressLocation } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -48,12 +42,7 @@ async function noPrerequisitesHandler(context: ExtensionContext) {
     );
 
     const filePath = Uri.file(
-      path.join(
-        context.extensionPath,
-        'src',
-        'html',
-        'mcdev_prerequisites.html'
-      )
+      path.join(context.extensionPath, 'src', 'html', 'mcdev_prerequisites.html')
     );
     let html = fs.readFileSync(filePath.fsPath, 'utf8').toString();
 

@@ -34,8 +34,7 @@ export async function support(context: ExtensionContext) {
       step: 1,
       placeholder: 'Pick an operational command',
       items: options,
-      activeItem:
-        typeof state.helpCommand !== 'string' ? state.helpCommand : undefined,
+      activeItem: typeof state.helpCommand !== 'string' ? state.helpCommand : undefined,
       shouldResume: shouldResume
     });
     terminal.show();
@@ -48,24 +47,17 @@ export async function support(context: ExtensionContext) {
         break;
       case 'open extension documentation':
         env.openExternal(
-          Uri.parse(
-            'https://github.com/asilva102/sfmc-devtools-vscode-extension'
-          )
+          Uri.parse('https://github.com/asilva102/sfmc-devtools-vscode-extension')
         );
         break;
       case 'open mcdev documentation':
-        env.openExternal(
-          Uri.parse('https://github.com/Accenture/sfmc-devtools/')
-        );
+        env.openExternal(Uri.parse('https://github.com/Accenture/sfmc-devtools/'));
         break;
     }
     return;
   }
 
-  async function inputGitUsername(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputGitUsername(input: MultiStepInput, state: Partial<State>) {
     state.gitUsername = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -111,10 +103,7 @@ export async function support(context: ExtensionContext) {
   async function validateUsename(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     value = value.trim();
-    return !value ||
-      value.trim().length < 4 ||
-      value.includes('"') ||
-      value.includes("'")
+    return !value || value.trim().length < 4 || value.includes('"') || value.includes("'")
       ? 'Please enter valid username'
       : undefined;
   }

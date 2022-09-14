@@ -27,10 +27,7 @@ export async function operationalCommands(context: ExtensionContext) {
 
   var result: any;
 
-  async function pickOperationalCommand(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function pickOperationalCommand(input: MultiStepInput, state: Partial<State>) {
     const options: QuickPickItem[] = [
       'retrieve',
       'deploy',
@@ -49,19 +46,14 @@ export async function operationalCommands(context: ExtensionContext) {
       placeholder: 'Pick an operational command',
       items: options,
       activeItem:
-        typeof state.operattionalCommand !== 'string'
-          ? state.operattionalCommand
-          : undefined,
+        typeof state.operattionalCommand !== 'string' ? state.operattionalCommand : undefined,
       shouldResume: shouldResume
     });
 
     return (input: MultiStepInput) => inputCredentialName(input, state);
   }
 
-  async function inputCredentialName(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputCredentialName(input: MultiStepInput, state: Partial<State>) {
     state.credentialName = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -121,6 +113,7 @@ export async function operationalCommands(context: ExtensionContext) {
     state.type = await input.showInputBox({
       ignoreFocusOut: true,
       title,
+
       step: 3,
       value: state.type || '',
       prompt: 'Enter Type',

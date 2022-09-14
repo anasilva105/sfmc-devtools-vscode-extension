@@ -47,10 +47,7 @@ export async function initDevTools(context: ExtensionContext) {
     }
   }
 
-  async function inputGitUsername(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputGitUsername(input: MultiStepInput, state: Partial<State>) {
     state.gitUsername = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -77,10 +74,7 @@ export async function initDevTools(context: ExtensionContext) {
     return (input: MultiStepInput) => inputCredentialName(input, state);
   }
 
-  async function inputCredentialName(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputCredentialName(input: MultiStepInput, state: Partial<State>) {
     state.credentialName = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -106,10 +100,7 @@ export async function initDevTools(context: ExtensionContext) {
     return (input: MultiStepInput) => inputClientSecret(input, state);
   }
 
-  async function inputClientSecret(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputClientSecret(input: MultiStepInput, state: Partial<State>) {
     state.clientSecret = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -148,10 +139,7 @@ export async function initDevTools(context: ExtensionContext) {
     return (input: MultiStepInput) => inputGitRemoteUrl(input, state);
   }
 
-  async function inputGitRemoteUrl(
-    input: MultiStepInput,
-    state: Partial<State>
-  ) {
+  async function inputGitRemoteUrl(input: MultiStepInput, state: Partial<State>) {
     state.gitRemoteUrl = await input.showInputBox({
       ignoreFocusOut: true,
       title,
@@ -178,9 +166,7 @@ export async function initDevTools(context: ExtensionContext) {
     ) {
       return runInitDevtools(data);
     } else {
-      window.showInformationMessage(
-        `at least one field was empty, please try again`
-      );
+      window.showInformationMessage(`at least one field was empty, please try again`);
       return collectInputs();
     }
   }
@@ -219,10 +205,7 @@ export async function initDevTools(context: ExtensionContext) {
   async function validateUsename(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     value = value.trim();
-    return !value ||
-      value.trim().length < 4 ||
-      value.includes('"') ||
-      value.includes("'")
+    return !value || value.trim().length < 4 || value.includes('"') || value.includes("'")
       ? 'Please enter valid username'
       : undefined;
   }
