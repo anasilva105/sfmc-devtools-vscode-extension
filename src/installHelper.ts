@@ -1,11 +1,10 @@
 import { hasPrerequisitesHandler, hasDevtoolsInstalled, runInstallDevtools } from './prerequisites';
+import { initHelper } from './initHelper';
 import { window, ViewColumn, Uri, ExtensionContext, ProgressLocation } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
 export async function installHelper(context: ExtensionContext){
-
-    
     // if user doesn't have prequisites installed
     const hasPrerequisites = await hasPrerequisitesHandler(null);
     if(!hasPrerequisites){
@@ -17,7 +16,7 @@ export async function installHelper(context: ExtensionContext){
         if(!hasDevtools){
             noDevToolsHandler(context);
         }else{
-         //   initHelper(context);
+            initHelper(context);
         }
     }
 }
@@ -50,7 +49,7 @@ async function noPrerequisitesHandler(context: ExtensionContext){
             if(message.command === "install"){
                 panel.dispose();
                 await installSFMCDevtools();
-          //      initHelper(context);
+                initHelper(context);
             }else{
                 const result = await hasPrerequisitesHandler(message.command);
                 panel.webview.postMessage({ command: message.command, result: result });
@@ -65,7 +64,7 @@ async function noDevToolsHandler(context: ExtensionContext){
     + " Do you want to install it?", ...["Yes", "No"]);
     if(response.toLowerCase() === "yes"){
         await installSFMCDevtools();
-      //  initHelper(context);
+        initHelper(context);
     }
 }
 
