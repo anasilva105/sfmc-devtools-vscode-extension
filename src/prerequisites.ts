@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { execInTerminal } from './utils';
-
+import { window } from 'vscode';
 const PREREQUISITES: any = {
     node:{
         cmd_version: 'node --version',
@@ -15,22 +14,23 @@ export async function hasPrerequisitesHandler(command: any): Promise<boolean>{
     let prerequisitesList: any = [];
     if(!command){
         prerequisitesList = await Promise.all(Object.keys(PREREQUISITES).map(async (res) => {
-            let result = await execInTerminal(PREREQUISITES[res].cmd_version);
+            let result = await window.createTerminal(PREREQUISITES[res].cmd_version);
             return PREREQUISITES[res].isValidVersion(result) !== null;
         }));
     }else{
-        let result = await execInTerminal(PREREQUISITES[command].cmd_version);
+        let result = await window.createTerminal(PREREQUISITES[command].cmd_version);
         prerequisitesList.push(PREREQUISITES[command].isValidVersion(result) !== null);
     }
     return prerequisitesList.every((res: boolean) => res === true);
 };
 
 export async function hasDevtoolsInstalled(): Promise<boolean>{
-    let result: any = await execInTerminal("mcdev --version");
+    let result: any = await window.createTerminal("mcdev --version");
     return result.match(/\d*.\d*.\d*/) !== null;
 }
 
 export async function runInstallDevtools(): Promise<boolean>{
-    let result: any = await execInTerminal(`npm install -g mcdev`);
+    let result: any = await window.createTerminal(`npm install -g mcdev`);
     return result;
 }
+const terminal = window.createTerminal(`Test`);
