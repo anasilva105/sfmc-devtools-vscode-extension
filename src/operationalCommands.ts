@@ -1,6 +1,5 @@
-import { ExtensionContext, QuickPickItem, window } from "vscode";
-import { MultiStepInput } from "./quickPickHelper";
-
+import { ExtensionContext, QuickPickItem, window } from 'vscode';
+import { MultiStepInput } from './quickPickHelper';
 
 export async function operationalCommands(context: ExtensionContext) {
   interface State {
@@ -13,10 +12,9 @@ export async function operationalCommands(context: ExtensionContext) {
     operattionalCommand: QuickPickItem;
     title: string;
     step: number;
-    totalSteps: number;
   }
 
-  const title = "Operational Commands DevTools";
+  const title = 'Operational Commands DevTools';
   const terminal = window.createTerminal(`Test`);
 
   //collects the inputs and calls the first window
@@ -29,39 +27,35 @@ export async function operationalCommands(context: ExtensionContext) {
 
   var result: any;
 
- 
-
   async function pickOperationalCommand(
     input: MultiStepInput,
     state: Partial<State>
   ) {
-   const options :QuickPickItem[] = [
-      "retrieve",
-      "deploy",
-      "badKeys",
-      "delete",
-      "document",
-      "retrieveAsTemplate",
-      "buildTemplate",
-      "buildDefinition",
-      "reloadBUs",
+    const options: QuickPickItem[] = [
+      'retrieve',
+      'deploy',
+      'badKeys',
+      'delete',
+      'document',
+      'retrieveAsTemplate',
+      'buildTemplate',
+      'buildDefinition',
+      'reloadBUs'
     ].map((label) => ({ label }));
     state.operattionalCommand = await input.showQuickPick({
       ignoreFocusOut: true,
       title,
       step: 1,
-      totalSteps: 3,
-      placeholder: "Pick an operational command",
+      placeholder: 'Pick an operational command',
       items: options,
       activeItem:
-        typeof state.operattionalCommand !== "string"
+        typeof state.operattionalCommand !== 'string'
           ? state.operattionalCommand
           : undefined,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
 
-	return (input: MultiStepInput) => inputCredentialName(input, state);	
-	
+    return (input: MultiStepInput) => inputCredentialName(input, state);
   }
 
   async function inputCredentialName(
@@ -71,20 +65,19 @@ export async function operationalCommands(context: ExtensionContext) {
     state.credentialName = await input.showInputBox({
       ignoreFocusOut: true,
       title,
-      step: 3,
-      totalSteps: 8,
-      value: state.credentialName || "",
-      prompt: "Enter the credential name",
+      step: 2,
+      value: state.credentialName || '',
+      prompt: 'Enter the credential name',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     switch (state.operattionalCommand.label) {
-      case "reloadBUs":
+      case 'reloadBUs':
         const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}`;
         console.log(command);
         terminal.show(true);
         terminal.sendText(command);
-        return result ;
+        return result;
         break;
       default:
         return (input: MultiStepInput) => inputBU(input, state);
@@ -96,32 +89,29 @@ export async function operationalCommands(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 3,
-      totalSteps: 8,
-      value: state.businessUnit || "",
-      prompt: "Enter the Businness unit (use * to select all BU)",
+      value: state.businessUnit || '',
+      prompt: 'Enter the Businness unit (use * to select all BU)',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
 
-
-	
-    if (state.businessUnit === "*" ) {
+    if (state.businessUnit === '*') {
       const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit}`;
       return terminal.sendText(command.trim());
     }
 
     switch (state.operattionalCommand.label) {
-      case "badKeys":
-      case "deploy":
+      case 'badKeys':
+      case 'deploy':
         const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit}`;
         return terminal.sendText(command.trim());
         break;
-      case "retrieve":
-      case "delete":
-      case "retrieveAsTemplate":
-      case "buildTemplate":
-      case "buildDefinition":
-      case "document":
+      case 'retrieve':
+      case 'delete':
+      case 'retrieveAsTemplate':
+      case 'buildTemplate':
+      case 'buildDefinition':
+      case 'document':
         return (input: MultiStepInput) => inputType(input, state);
         break;
     }
@@ -132,14 +122,13 @@ export async function operationalCommands(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 3,
-      totalSteps: 8,
-      value: state.type || "",
-      prompt: "Enter Type",
+      value: state.type || '',
+      prompt: 'Enter Type',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     switch (state.operattionalCommand.label) {
-      case "document":
+      case 'document':
         const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit} ${state.type}`;
         console.log(command.trim());
         terminal.sendText(command.trim());
@@ -156,20 +145,19 @@ export async function operationalCommands(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 3,
-      totalSteps: 8,
-      value: state.key || "",
-      prompt: "Enter key",
+      value: state.key || '',
+      prompt: 'Enter key',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
 
     switch (state.operattionalCommand.label) {
-      case "delete":
-      case "retrieve":
+      case 'delete':
+      case 'retrieve':
         const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit} ${state.type} ${state.key}`;
         return terminal.sendText(command.trim());
         break;
-      case "buildTemplate":
+      case 'buildTemplate':
         return (input: MultiStepInput) => inputMarket(input, state);
         break;
       default:
@@ -183,20 +171,19 @@ export async function operationalCommands(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 3,
-      totalSteps: 8,
-      value: state.market || "",
-      prompt: "Enter Market",
+      value: state.market || '',
+      prompt: 'Enter Market',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     switch (state.operattionalCommand.label) {
-      case "buildTemplate":
+      case 'buildTemplate':
         const command = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit} ${state.type} ${state.key} ${state.market}`;
         console.log(command.trim());
         return terminal.sendText(command.trim());
         break;
-      case "retrieveAsTemplate":
-      case "buildDefinition":
+      case 'retrieveAsTemplate':
+      case 'buildDefinition':
         const command2 = `mcdev ${state.operattionalCommand.label} ${state.credentialName}/${state.businessUnit} ${state.type}  ${state.name} ${state.market}`;
         console.log(command2.trim());
         return terminal.sendText(command2);
@@ -208,11 +195,10 @@ export async function operationalCommands(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 3,
-      totalSteps: 8,
-      value: state.name || "",
-      prompt: "Enter Name",
+      value: state.name || '',
+      prompt: 'Enter Name',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     switch (state.operattionalCommand.label) {
       default:
@@ -230,8 +216,8 @@ export async function operationalCommands(context: ExtensionContext) {
   async function validateInput(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     value = value.trim();
-	console.log(value);
-    return !value ? "Please enter the indicated information" : undefined;
+    console.log(value);
+    return !value ? 'Please enter the indicated information' : undefined;
   }
 
   await collectInputs();

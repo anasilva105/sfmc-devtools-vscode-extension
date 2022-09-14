@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ExtensionContext, window } from "vscode";
-import { MultiStepInput } from "./quickPickHelper";
-const git = require("simple-git")();
-const commandExists = require("command-exists");
+import { ExtensionContext, window } from 'vscode';
+import { MultiStepInput } from './quickPickHelper';
+const git = require('simple-git')();
+const commandExists = require('command-exists');
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
  *
@@ -24,7 +24,6 @@ export async function initDevTools(context: ExtensionContext) {
     credentialName: string;
     title: string;
     step: number;
-    totalSteps: number;
   }
 
   async function collectInputs() {
@@ -34,14 +33,14 @@ export async function initDevTools(context: ExtensionContext) {
     return state as State;
   }
 
-  const title = "Init DevTools";
+  const title = 'Init DevTools';
   const terminal = window.createTerminal(`Test`);
 
   async function requirements() {
-    if (!commandExists.sync("git")) {
-      window.showInformationMessage("Git installation not found.");
+    if (!commandExists.sync('git')) {
+      window.showInformationMessage('Git installation not found.');
       window.showInformationMessage(
-        "Please follow our tutorial on installing Git: https://github.com/Accenture/sfmc-devtools#212-install-the-git-command-line"
+        'Please follow our tutorial on installing Git: https://github.com/Accenture/sfmc-devtools#212-install-the-git-command-line'
       );
     } else {
       await collectInputs();
@@ -56,11 +55,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 1,
-      totalSteps: 8,
-      value: state.gitUsername || "",
-      prompt: "Enter Git Username",
+      value: state.gitUsername || '',
+      prompt: 'Enter Git Username',
       validate: validateUsename,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
 
     return (input: MultiStepInput) => inputGitEmail(input, state);
@@ -70,11 +68,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 2,
-      totalSteps: 8,
-      value: state.gitEmail || "",
-      prompt: "Enter Git Email",
+      value: state.gitEmail || '',
+      prompt: 'Enter Git Email',
       validate: validateEmail,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
 
     return (input: MultiStepInput) => inputCredentialName(input, state);
@@ -88,11 +85,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 3,
-      totalSteps: 8,
-      value: state.credentialName || "",
-      prompt: "how you would like the credential to be named (own choice)",
+      value: state.credentialName || '',
+      prompt: 'how you would like the credential to be named (own choice)',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     return (input: MultiStepInput) => inputClientId(input, state);
   }
@@ -102,11 +98,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 4,
-      totalSteps: 8,
-      value: state.clientId || "",
-      prompt: "Enter client id of installed package",
+      value: state.clientId || '',
+      prompt: 'Enter client id of installed package',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     return (input: MultiStepInput) => inputClientSecret(input, state);
   }
@@ -119,11 +114,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 5,
-      totalSteps: 8,
-      value: state.clientSecret || "",
-      prompt: "Choose a unique name for the Application Service",
+      value: state.clientSecret || '',
+      prompt: 'Choose a unique name for the Application Service',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     return (input: MultiStepInput) => inputAuthUrl(input, state);
   }
@@ -133,11 +127,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 6,
-      totalSteps: 8,
-      value: state.authUrl || "",
-      prompt: "Enter tenant specific auth url of installed package",
+      value: state.authUrl || '',
+      prompt: 'Enter tenant specific auth url of installed package',
       validate: validateInput,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     return (input: MultiStepInput) => inputAccountId(input, state);
   }
@@ -147,11 +140,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 7,
-      totalSteps: 8,
-      value: state.accountId || "",
-      prompt: "Enter MID of the Parent Business Unit",
+      value: state.accountId || '',
+      prompt: 'Enter MID of the Parent Business Unit',
       validate: validateMID,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     return (input: MultiStepInput) => inputGitRemoteUrl(input, state);
   }
@@ -164,11 +156,10 @@ export async function initDevTools(context: ExtensionContext) {
       ignoreFocusOut: true,
       title,
       step: 8,
-      totalSteps: 8,
-      value: state.gitRemoteUrl || "",
-      prompt: "Enter URL of Git remote server",
+      value: state.gitRemoteUrl || '',
+      prompt: 'Enter URL of Git remote server',
       validate: validateMID,
-      shouldResume: shouldResume,
+      shouldResume: shouldResume
     });
     validateInfo(state);
     return;
@@ -195,13 +186,12 @@ export async function initDevTools(context: ExtensionContext) {
   }
 
   async function runInitDevtools(data: any): Promise<boolean> {
-    data.clientId = "xxxx";
-    data.clientSecret = "xxxx";
-    data.authUrl =       "xxxxx";
-    data.accountId = "xxxxx";
-    data.credentialName = "xxxx";
-    data.gitRemoteUrl = "xxxxx";
-
+    data.clientId = 'xxxx';
+    data.clientSecret = 'xxxx';
+    data.authUrl = 'xxxxx';
+    data.accountId = 'xxxxx';
+    data.credentialName = 'xxxx';
+    data.gitRemoteUrl = 'xxxxx';
 
     //Util.execSync('git', ['config', '--local', 'user.name', name]);
     //const longexec = `mcdev init --y.credentialName "${data.credentialName}" --y.client_id "${data.clientId}" --y.client_secret "${data.clientSecret}" --y.auth_url "${data.authUrl}" --y.gitRemoteUrl "${data.gitRemoteUrl}" --y.account_id ${data.accountId}`;
@@ -223,7 +213,7 @@ export async function initDevTools(context: ExtensionContext) {
     const regex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return !value || !regex.test(String(value).toLowerCase())
-      ? "Please enter valid email"
+      ? 'Please enter valid email'
       : undefined;
   }
   async function validateUsename(value: string) {
@@ -233,22 +223,23 @@ export async function initDevTools(context: ExtensionContext) {
       value.trim().length < 4 ||
       value.includes('"') ||
       value.includes("'")
-      ? "Please enter valid username"
+      ? 'Please enter valid username'
       : undefined;
   }
 
   async function validateMID(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const num = Number(value.trim());
-	console.log(Number.isInteger(num));
-    return !num  //|| Number.isInteger(num) 
-	? undefined : "Please enter valid MID Number";
+    console.log(Number.isInteger(num));
+    return !num //|| Number.isInteger(num)
+      ? undefined
+      : 'Please enter valid MID Number';
   }
 
   async function validateInput(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     value = value.trim();
-    return !value ? "Please enter the indicated information" : undefined;
+    return !value ? 'Please enter the indicated information' : undefined;
   }
 
   requirements();
