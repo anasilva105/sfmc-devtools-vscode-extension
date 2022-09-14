@@ -128,10 +128,10 @@ export async function initDevTools(context: ExtensionContext) {
 		//const longexec2="mcdev init --y.credentialName "+'"'+data.credentialName+'"'+" --y.client_id " +'"'+data.clientId+'"'+" --y.client_secret "+'"'+data.clientSecret+'"'+" --y.auth_url "+'"'+data.authUrl+'"'+" --y.account_id "+data.accountId;
 
 		console.log(longexec);
-		let result: any = await window.createTerminal(longexec);
-		console.log('run');
-		console.log(result);
-		return result;
+		const terminal = window.createTerminal(`Help`);
+		terminal.show();
+		terminal.sendText(longexec);
+		return;
 	}
 
 	function shouldResume() {

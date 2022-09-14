@@ -30,7 +30,6 @@ export async function support(context: ExtensionContext) {
         state: Partial < State >
     ) {
         const options: QuickPickItem[] = [
-            "upgrade mcdev",
             "check version mcdev",
             "open extension documentation",
             "open mcdev documentation",
@@ -50,17 +49,19 @@ export async function support(context: ExtensionContext) {
            shouldResume: shouldResume,
         });
         const terminal = window.createTerminal(`Help`);
+		terminal.show();
         switch (state.helpCommand.label) {
             case "upgrade mcdev":
-                terminal.sendText('mcdev upgrade');
+                terminal.sendText(`mcdev upgrade --y.credentialsName --y.credentialsName`);
                 break;
             case "check version mcdev":
                 terminal.sendText('mcdev --version');
                 break;
             case "open extension documentation":
-				env.openExternal(Uri.parse("https://www.stackoverflow.com/"));  
+				env.openExternal(Uri.parse("https://github.com/asilva102/sfmc-devtools-vscode-extension"));  
                 break;
             case "open mcdev documentation":
+				env.openExternal(Uri.parse("https://github.com/Accenture/sfmc-devtools/"));  
                 break;
         }
         return;
