@@ -195,13 +195,12 @@ export async function initDevTools(context: ExtensionContext) {
   }
 
   async function runInitDevtools(data: any): Promise<boolean> {
-    data.clientId = "zd7gf1xrn2rvhzvvjnig1rzg";
-    data.clientSecret = "qWzsVZRNKXpceoH62rdof7W2";
-    data.authUrl =
-      "https://mct0l7nxfq2r988t1kxfy8sc47mq.auth.marketingcloudapis.com/";
-    data.accountId = "7281698";
-    data.credentialName = "new_test";
-    data.gitRemoteUrl = "x";
+    data.clientId = "xxxx";
+    data.clientSecret = "xxxx";
+    data.authUrl =       "xxxxx";
+    data.accountId = "xxxxx";
+    data.credentialName = "xxxx";
+    data.gitRemoteUrl = "xxxxx";
 
 
     //Util.execSync('git', ['config', '--local', 'user.name', name]);
