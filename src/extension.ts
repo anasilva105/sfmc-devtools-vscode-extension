@@ -1,4 +1,4 @@
-import { window, commands, ExtensionContext, StatusBarItem, StatusBarAlignment } from 'vscode';
+import { window, commands, ExtensionContext, StatusBarAlignment } from 'vscode';
 import { initDevTools } from './initDevTools';
 import { operationalCommands } from './operationalCommands';
 import { installHelper } from './installHelper';

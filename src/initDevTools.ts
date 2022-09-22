@@ -1,17 +1,7 @@
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
 import { ExtensionContext, window } from 'vscode';
 import { MultiStepInput } from './quickPickHelper';
-const git = require('simple-git')();
 const commandExists = require('command-exists');
-/**
- * A multi-step input using window.createQuickPick() and window.createInputBox().
- *
- * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
- */
+
 export async function initDevTools(context: ExtensionContext) {
   interface State {
     gitUsername: string;
@@ -146,7 +136,7 @@ export async function initDevTools(context: ExtensionContext) {
       step: 8,
       value: state.gitRemoteUrl || '',
       prompt: 'Enter URL of Git remote server',
-      validate: validateMID,
+      validate: validateInput,
       shouldResume: shouldResume
     });
     validateInfo(state);
@@ -172,17 +162,15 @@ export async function initDevTools(context: ExtensionContext) {
   }
 
   async function runInitDevtools(data: any): Promise<boolean> {
-    data.clientId = 'xxxx';
-    data.clientSecret = 'xxxx';
-    data.authUrl = 'xxxxx';
-    data.accountId = 'xxxxx';
-    data.credentialName = 'xxxx';
-    data.gitRemoteUrl = 'xxxxx';
-
-    //Util.execSync('git', ['config', '--local', 'user.name', name]);
-    //const longexec = `mcdev init --y.credentialName "${data.credentialName}" --y.client_id "${data.clientId}" --y.client_secret "${data.clientSecret}" --y.auth_url "${data.authUrl}" --y.gitRemoteUrl "${data.gitRemoteUrl}" --y.account_id ${data.accountId}`;
-    //console.log(longexec);
-    //terminal.sendText(longexec);
+    data.clientId = 'zd7gf1xrn2rvhzvvjnig1rzg';
+    data.clientSecret = 'qWzsVZRNKXpceoH62rdof7W2';
+    data.authUrl = "https://mct0l7nxfq2r988t1kxfy8sc47mq.auth.marketingcloudapis.com/";
+    data.accountId = 7330930;
+    data.credentialName = 'Testing_devtools-2';
+    data.gitRemoteUrl = 'https://github.com/asilva102/sfmc_devtools_extension_test.git';
+    const longexec = `mcdev init --y.credentialName "${data.credentialName}" --y.client_id "${data.clientId}" --y.client_secret "${data.clientSecret}" --y.auth_url "${data.authUrl}" --y.gitRemoteUrl "${data.gitRemoteUrl}" --y.account_id ${data.accountId}`;
+    console.log(longexec);
+    terminal.sendText(longexec);
     return;
   }
 
@@ -212,9 +200,8 @@ export async function initDevTools(context: ExtensionContext) {
 
   async function validateMID(value: string) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const num = Number(value.trim());
-    console.log(Number.isInteger(num));
-    return !num //|| Number.isInteger(num)
+    const num = Number(value);
+    return Number.isInteger(num)
       ? undefined
       : 'Please enter valid MID Number';
   }
@@ -226,6 +213,4 @@ export async function initDevTools(context: ExtensionContext) {
   }
 
   requirements();
-  //const state = await collectInputs();
-  //window.showInformationMessage(`Creating Application Service '${state.credentialName}'`);
 }

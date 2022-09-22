@@ -1,7 +1,5 @@
 import { ExtensionContext, window } from 'vscode';
 import { MultiStepInput } from './quickPickHelper';
-const commandExists = require('command-exists');
-const git = require('simple-git')();
 
 export async function initDevTools(context: ExtensionContext) {
   interface State {
@@ -28,7 +26,6 @@ export async function initDevTools(context: ExtensionContext) {
       title,
       step: 1,
       value: state.credentialName || '',
-
       prompt: 'how you would like the credential to be named (own choice)',
       validate: validateNameIsUnique,
       shouldResume: shouldResume
